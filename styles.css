@@ -1,0 +1,431 @@
+:root {
+    --color-primary: 62, 137, 245;
+    --color-primary-dark: 41, 121, 255;
+    --color-success: 76, 175, 80;
+    --color-warning: 255, 152, 0;
+    --color-danger: 244, 67, 54;
+    --color-light: 255, 255, 255;
+    --color-dark: 18, 18, 18;
+    --color-text-light: 33, 33, 33;
+    --color-text-dark: 238, 238, 238;
+    --color-bg-light: 248, 249, 250;
+    --color-bg-dark: 22, 22, 22;
+    --color-card-light: 255, 255, 255;
+    --color-card-dark: 30, 30, 30;
+    --color-border-light: 224, 224, 224;
+    --color-border-dark: 50, 50, 50;
+    --color-shadow: 0, 0, 0;
+    --color-highlight-bg: 243, 244, 246;
+    --color-highlight-dark: 38, 38, 38;
+    --spacing-unit: 8px;
+    --border-radius: 12px;
+    --transition-speed: 0.2s;
+}
+
+[data-theme="light"] {
+    --color-text: var(--color-text-light);
+    --color-text-secondary: rgba(var(--color-text-light), 0.7);
+    --color-bg: var(--color-bg-light);
+    --color-card: var(--color-card-light);
+    --color-border: var(--color-border-light);
+    --color-shadow-opacity: 0.1;
+    --color-highlight: var(--color-highlight-bg);
+    --color-input-bg: var(--color-card-light);
+}
+
+[data-theme="dark"] {
+    --color-text: var(--color-text-dark);
+    --color-text-secondary: rgba(var(--color-text-dark), 0.7);
+    --color-bg: var(--color-bg-dark);
+    --color-card: var(--color-card-dark);
+    --color-border: var(--color-border-dark);
+    --color-shadow-opacity: 0.2;
+    --color-highlight: var(--color-highlight-dark);
+    --color-input-bg: var(--color-card-dark);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: background-color var(--transition-speed),
+        color var(--transition-speed),
+        border-color var(--transition-speed),
+        box-shadow var(--transition-speed);
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: rgb(var(--color-bg));
+    color: rgb(var(--color-text));
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: calc(2 * var(--spacing-unit));
+}
+
+.app-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: calc(2 * var(--spacing-unit));
+}
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: calc(2 * var(--spacing-unit));
+}
+
+.app-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: rgb(var(--color-text));
+}
+
+.theme-toggle {
+    background: none;
+    border: none;
+    color: rgb(var(--color-text));
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: calc(var(--spacing-unit) * 1.5);
+    border-radius: 50%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(var(--color-primary), 0.1);
+    width: 44px;
+    height: 44px;
+}
+
+.theme-toggle:hover {
+    background-color: rgba(var(--color-primary), 0.2);
+}
+
+.app-main {
+    display: flex;
+    flex-direction: column;
+    gap: calc(2 * var(--spacing-unit));
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 2fr 350px;
+    gap: calc(3 * var(--spacing-unit));
+}
+
+.card {
+    background-color: rgb(var(--color-card));
+    border-radius: var(--border-radius);
+    padding: calc(2 * var(--spacing-unit));
+    box-shadow: 0 4px 6px rgba(var(--color-shadow), var(--color-shadow-opacity));
+    border: 1px solid rgba(var(--color-border), 0.2);
+}
+
+.description-card {
+    grid-column: 1;
+    background-color: rgb(var(--color-card));
+    border-radius: var(--border-radius);
+    padding: calc(2 * var(--spacing-unit));
+    box-shadow: 0 4px 6px rgba(var(--color-shadow), var(--color-shadow-opacity));
+    border: 1px solid rgba(var(--color-border), 0.2);
+    margin-bottom: calc(2 * var(--spacing-unit));
+}
+
+.description-content {
+    display: flex;
+    flex-direction: column;
+    gap: calc(2 * var(--spacing-unit));
+}
+
+.description-item {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing-unit) * 0.5);
+}
+
+.description-item h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 0.75);
+    color: rgb(var(--color-primary));
+}
+
+.description-item h3 i {
+    font-size: 0.9rem;
+}
+
+.description-item p {
+    color: rgb(var(--color-text-secondary));
+    font-size: 0.95rem;
+    line-height: 1.55;
+}
+
+.highlight-green {
+    color: rgb(var(--color-success));
+    font-weight: 600;
+}
+
+.highlight-red {
+    color: rgb(var(--color-danger));
+    font-weight: 600;
+}
+
+.input-card {
+    grid-column: 1;
+    background-color: rgb(var(--color-card));
+    border-radius: var(--border-radius);
+    padding: calc(2 * var(--spacing-unit));
+    box-shadow: 0 4px 6px rgba(var(--color-shadow), var(--color-shadow-opacity));
+    border: 1px solid rgba(var(--color-border), 0.2);
+}
+
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: calc(3 * var(--spacing-unit));
+    margin-top: calc(2 * var(--spacing-unit));
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing-unit) * 0.5);
+}
+
+.input-group label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: rgb(var(--color-text-secondary));
+}
+
+.number-input {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    border: 1px solid rgba(var(--color-border), 0.3);
+    background-color: rgb(var(--color-input-bg));
+}
+
+.number-btn {
+    background: none;
+    border: none;
+    padding: calc(var(--spacing-unit) * 1.5);
+    cursor: pointer;
+    color: rgb(var(--color-text-secondary));
+    transition: all var(--transition-speed);
+    flex: 1;
+    min-width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.number-btn:first-child {
+    border-right: 1px solid rgba(var(--color-border), 0.3);
+}
+
+.number-btn:last-child {
+    border-left: 1px solid rgba(var(--color-border), 0.3);
+}
+
+.number-btn:hover {
+    background-color: rgba(var(--color-primary), 0.1);
+    color: rgb(var(--color-primary));
+}
+
+.number-btn:active {
+    background-color: rgba(var(--color-primary), 0.2);
+}
+
+.number-btn.minus {
+    color: rgb(var(--color-danger));
+}
+
+.number-btn.minus:hover {
+    background-color: rgba(var(--color-danger), 0.1);
+    color: rgb(var(--color-danger));
+}
+
+.number-field {
+    flex: 2;
+    border: none;
+    padding: calc(var(--spacing-unit) * 1.5);
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 500;
+    background: transparent;
+    color: rgb(var(--color-text));
+    outline: none;
+    min-width: 0;
+    -moz-appearance: textfield;
+}
+
+.number-field::-webkit-outer-spin-button,
+.number-field::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.result-section {
+    display: flex;
+    flex-direction: column;
+    gap: calc(2 * var(--spacing-unit));
+    position: sticky;
+    top: calc(2 * var(--spacing-unit));
+    height: fit-content;
+}
+
+.result-card {
+    background-color: rgb(var(--color-card));
+    border-radius: var(--border-radius);
+    padding: calc(2 * var(--spacing-unit));
+    box-shadow: 0 4px 6px rgba(var(--color-shadow), var(--color-shadow-opacity));
+    border: 1px solid rgba(var(--color-border), 0.2);
+    width: 100%;
+}
+
+.result-header {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing-unit) * 0.5);
+    margin-bottom: calc(2 * var(--spacing-unit));
+    padding-bottom: calc(2 * var(--spacing-unit));
+    border-bottom: 1px solid rgba(var(--color-border), 0.2);
+}
+
+/* Gesamtwahrscheinlichkeit - NUR Textfarbe */
+.probability-display {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    padding: calc(var(--spacing-unit) * 1.5);
+    border-radius: calc(var(--border-radius) * 0.75);
+    margin: 0 auto;
+    width: fit-content;
+}
+
+/* Hervorhebungsklassen für die Gesamtwahrscheinlichkeit - NUR Textfarbe */
+.probability-display.high-probability {
+    color: rgb(var(--color-success));
+    background-color: transparent;
+}
+
+.probability-display.medium-probability {
+    color: rgb(var(--color-warning));
+    background-color: transparent;
+}
+
+.probability-display.low-probability {
+    color: rgb(var(--color-danger));
+    background-color: transparent;
+}
+
+/* ... (Rest des CSS bleibt gleich) ... */
+
+
+.table-container {
+    overflow: hidden;
+    border-radius: calc(var(--border-radius) * 0.75);
+}
+
+.table-container h3 {
+    font-size: 1rem;
+    margin-bottom: calc(var(--spacing-unit) * 1.5);
+    color: rgb(var(--color-text-secondary));
+    text-align: center;
+}
+
+.probability-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.probability-table th {
+    background-color: rgb(var(--color-highlight));
+    padding: calc(var(--spacing-unit) * 1.5);
+    text-align: left;
+    font-weight: 600;
+    color: rgb(var(--color-text-secondary));
+    border-bottom: 1px solid rgba(var(--color-border), 0.2);
+}
+
+.probability-table th:last-child {
+    text-align: right;
+}
+
+.probability-table td {
+    padding: calc(var(--spacing-unit) * 1.5);
+    border-bottom: 1px solid rgba(var(--color-border), 0.1);
+    color: rgb(var(--color-text));
+    /* Neutrale Farbe für Tabellenwerte */
+}
+
+.probability-table td:last-child {
+    text-align: right;
+    font-weight: 500;
+}
+
+.probability-table tr:last-child td {
+    border-bottom: none;
+}
+
+.probability-table tr:hover {
+    background-color: rgba(var(--color-primary), 0.05);
+}
+
+/* Entferne alle Farbhervorhebungen für Tabellenwerte */
+.probability-table td.high-probability,
+.probability-table td.medium-probability,
+.probability-table td.low-probability {
+    color: inherit !important;
+    font-weight: inherit !important;
+    background-color: transparent !important;
+}
+
+@media (max-width: 1200px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .result-section {
+        position: static;
+    }
+
+    .input-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .app-title {
+        font-size: 1.5rem;
+    }
+
+    .probability-display {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: calc(var(--spacing-unit) * 0.5);
+    }
+
+    .content-grid {
+        gap: calc(2 * var(--spacing-unit));
+    }
+
+    .probability-display {
+        font-size: 1.75rem;
+    }
+}
