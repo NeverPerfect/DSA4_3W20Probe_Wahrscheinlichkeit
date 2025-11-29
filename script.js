@@ -1,4 +1,6 @@
+// ----------------------------------------
 // Theme Management
+// ----------------------------------------
 const themeToggle = document.getElementById('theme-toggle');
 const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
 const currentTheme = localStorage.getItem('theme');
@@ -35,33 +37,53 @@ function isCriticalFailure(w1, w2, w3) {
     return (w1 === 20 && w2 === 20) || (w2 === 20 && w3 === 20) || (w1 === 20 && w3 === 20);
 }
 
-
 // ----------------------------------------
-// KORREKTE Berechnung aller TaP* Wahrscheinlichkeiten
+// Berechnung aller TaP* Wahrscheinlichkeiten
 // ----------------------------------------
 function calculateTapProbabilities(e1, e2, e3, tawBase, mod = 0) {
-    const tawEff = tawBase + mod;
     const counts = new Array(tawBase + 1).fill(0);
     let successTotal = 0;
+
+    // Differenz für Erschwernis > TaW
+    const diff = mod < 0 ? Math.max(0, -mod - tawBase) : 0;
+    const effectiveTaW = tawBase + mod; // für erleichterte Proben, darf nicht > TawBase verwendet werden
 
     for (let w1 = 1; w1 <= 20; w1++) {
         for (let w2 = 1; w2 <= 20; w2++) {
             for (let w3 = 1; w3 <= 20; w3++) {
+                let tap = null;
 
-                let tap = null; // wird nur gesetzt, wenn Probe erfolgreich
-
-                // Critical Success → volle TaP*
-                if (isCriticalSuccess(w1, w2, w3)) {
-                    tap = tawBase;
+                // Kritische Erfolge
+                if ((w1 === 1 && w2 === 1) || (w2 === 1 && w3 === 1) || (w1 === 1 && w3 === 1)) {
+                    tap = tawBase; // volle TaP* bei Doppel-1
                 }
-                // Normale Erfolge → alle Würfel ≤ Eigenschaft
-                else if (w1 <= e1 && w2 <= e2 && w3 <= e3) {
-                    const cost = (e1 - w1) + (e2 - w2) + (e3 - w3); // tatsächliche Ausnutzung
-                    tap = Math.min(cost, tawBase);
+                // Kritische Fehlschläge
+                else if ((w1 === 20 && w2 === 20) || (w2 === 20 && w3 === 20) || (w1 === 20 && w3 === 20)) {
+                    continue; // Probe gescheitert
                 }
-                // Alles andere → Fehlschlag, wird nicht gezählt
                 else {
-                    continue;
+                    // Effektive Eigenschaften nach Erschwernis
+                    let e1Eff = Math.max(0, e1 - diff);
+                    let e2Eff = Math.max(0, e2 - diff);
+                    let e3Eff = Math.max(0, e3 - diff);
+
+                    // Differenzen pro Wurf
+                    const over1 = Math.max(0, w1 - e1Eff);
+                    const over2 = Math.max(0, w2 - e2Eff);
+                    const over3 = Math.max(0, w3 - e3Eff);
+
+                    const totalOver = over1 + over2 + over3;
+
+                    // Überprüfen, ob TaW ausreicht
+                    if (totalOver > effectiveTaW) continue; // Probe gescheitert
+
+                    // TaP* = verbleibende Punkte
+                    if (diff > 0 && w1 <= e1Eff && w2 <= e2Eff && w3 <= e3Eff) {
+                        // Sonderregel: erschwerte Probe, volle TaW verbraucht → TaP* = 0
+                        tap = 0;
+                    } else {
+                        tap = Math.min(effectiveTaW - totalOver, tawBase);
+                    }
                 }
 
                 counts[tap]++;
@@ -71,13 +93,14 @@ function calculateTapProbabilities(e1, e2, e3, tawBase, mod = 0) {
     }
 
     return {
-        total: successTotal / 8000 * 100,
-        taps: counts.map(c => c / 8000 * 100)
+        total: (successTotal / 8000) * 100,
+        taps: counts.map(c => (c / 8000) * 100)
     };
 }
 
+
 // ----------------------------------------
-// Anzeige aktualisieren
+// Ergebnisse anzeigen
 // ----------------------------------------
 function updateResults() {
     const e1 = parseInt(document.getElementById('eigenschaft1').value);
@@ -86,14 +109,13 @@ function updateResults() {
     const taw = parseInt(document.getElementById('taw').value);
     const mod = parseInt(document.getElementById('modifikator').value);
 
-    const tawBase = taw;          // maximal mögliche TaP*
-    const tawEff = taw + mod;    // effektiver TaW für die Probe
+    const tawBase = taw;
 
-    const result = calculateTapProbabilities(e1, e2, e3, tawEff, tawBase);
+    const result = calculateTapProbabilities(e1, e2, e3, tawBase, mod);
 
-    // Gesamterfolgswahrscheinlichkeit anzeigen
+    // Gesamterfolgswahrscheinlichkeit
     const probabilityElement = document.getElementById('erfolgswahrscheinlichkeit');
-    probabilityElement.textContent = `${result.total.toFixed(1)}%`;
+    probabilityElement.textContent = `${result.total.toFixed(2)}%`;
 
     if (result.total >= 70)
         probabilityElement.className = 'probability-display high-probability';
@@ -102,7 +124,6 @@ function updateResults() {
     else
         probabilityElement.className = 'probability-display low-probability';
 
-    // Tabelle aktualisieren
     updateProbabilityTable(tawBase, result.taps);
 }
 
@@ -110,11 +131,9 @@ function updateResults() {
 // Tabelle für TaP* Wahrscheinlichkeiten
 // ----------------------------------------
 function updateProbabilityTable(tawBase, tapProbabilities) {
-
     const tableBody = document.querySelector('#tapTable tbody');
     tableBody.innerHTML = '';
 
-    // ⬇️ HIER kommt deine Schleife hin:
     for (let tap = 0; tap <= tawBase; tap++) {
         const row = document.createElement('tr');
 
@@ -124,7 +143,6 @@ function updateProbabilityTable(tawBase, tapProbabilities) {
         const probCell = document.createElement('td');
         probCell.textContent = `${tapProbabilities[tap].toFixed(2)}%`;
 
-        // Farben wie gewohnt
         probCell.className = 'probability-value';
         if (tapProbabilities[tap] >= 70) probCell.classList.add('high-probability');
         else if (tapProbabilities[tap] >= 30) probCell.classList.add('medium-probability');
@@ -136,9 +154,8 @@ function updateProbabilityTable(tawBase, tapProbabilities) {
     }
 }
 
-
 // ----------------------------------------
-// Event Listener
+// Event Listener für Buttons & Inputs
 // ----------------------------------------
 document.querySelectorAll('.number-btn').forEach(button => {
     button.addEventListener('click', (e) => {
@@ -165,10 +182,7 @@ document.querySelectorAll('.number-field').forEach(input => {
         e.target.value = value;
         updateResults();
     });
-});
 
-// Keyboard support
-document.querySelectorAll('.number-field').forEach(input => {
     input.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowUp') {
             e.preventDefault();
@@ -182,5 +196,5 @@ document.querySelectorAll('.number-field').forEach(input => {
     });
 });
 
-// Initialer Start
+// Initial
 updateResults();
