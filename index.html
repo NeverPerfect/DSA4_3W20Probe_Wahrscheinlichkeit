@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA4 3W20-Probenrechner</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: inline-block;
+            width: 120px;
+        }
+
+        input,
+        select {
+            padding: 5px;
+        }
+
+        button {
+            padding: 8px 15px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #ergebnis {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+        }
+
+        .erfolg {
+            color: green;
+            font-weight: bold;
+        }
+
+        .misserfolg {
+            color: red;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>DSA4 3W20-Probenrechner</h1>
+
+    <div class="input-group">
+        <label for="eigenschaft1">Eigenschaft 1:</label>
+        <input type="number" id="eigenschaft1" value="12" min="8" max="20">
+    </div>
+    <div class="input-group">
+        <label for="eigenschaft2">Eigenschaft 2:</label>
+        <input type="number" id="eigenschaft2" value="12" min="8" max="20">
+    </div>
+    <div class="input-group">
+        <label for="eigenschaft3">Eigenschaft 3:</label>
+        <input type="number" id="eigenschaft3" value="12" min="8" max="20">
+    </div>
+    <div class="input-group">
+        <label for="taw">Talentwert (TaW):</label>
+        <input type="number" id="taw" value="10" min="0" max="30">
+    </div>
+    <div class="input-group">
+        <label for="modifikator">Modifikator:</label>
+        <input type="number" id="modifikator" value="0" min="-20" max="20">
+    </div>
+
+    <button id="berechnen">Erfolgswahrscheinlichkeit berechnen</button>
+
+    <div id="ergebnis"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
