@@ -33,10 +33,9 @@
                             <div class="description-item">
                                 <h3><i class="fas fa-dice"></i> Was wird berechnet?</h3>
                                 <p>
-                                    Dieser Rechner ermittelt die Erfolgswahrscheinlichkeit für 3W20-Proben,
-                                    wie sie in Pen-&-Paper-Rollenspielen (z. B. DSA) verwendet werden.
+                                    Dieser Rechner ermittelt die Erfolgswahrscheinlichkeit für 3W20-Proben.
                                     Drei 20-seitige Würfel werden mit deinen Eigenschaftswerten, dem TaW
-                                    (Talentswert) und einem Modifikator verglichen.
+                                    (Talentwert) und einem Modifikator verglichen.
                                 </p>
                             </div>
                             <div class="description-item">
@@ -73,7 +72,7 @@
                                         <i class="fas fa-minus"></i>
                                     </button>
                                     <input type="number" id="eigenschaft1" class="number-field" value="10" min="0"
-                                        max="20" aria-label="Eigenschaft 1 Wert">
+                                        max="31" aria-label="Eigenschaft 1 Wert">
                                     <button class="number-btn plus" data-target="eigenschaft1"
                                         aria-label="Wert erhöhen">
                                         <i class="fas fa-plus"></i>
@@ -88,8 +87,8 @@
                                         aria-label="Wert verringern">
                                         <i class="fas fa-minus"></i>
                                     </button>
-                                    <input type="number" id="modifikator" class="number-field" value="0" min="-20"
-                                        max="20" aria-label="Modifikator Wert">
+                                    <input type="number" id="modifikator" class="number-field" value="0" min="-25"
+                                        max="12" aria-label="Modifikator Wert">
                                     <button class="number-btn plus" data-target="modifikator" aria-label="Wert erhöhen">
                                         <i class="fas fa-plus"></i>
                                     </button>
@@ -104,7 +103,7 @@
                                         <i class="fas fa-minus"></i>
                                     </button>
                                     <input type="number" id="eigenschaft2" class="number-field" value="10" min="0"
-                                        max="20" aria-label="Eigenschaft 2 Wert">
+                                        max="31" aria-label="Eigenschaft 2 Wert">
                                     <button class="number-btn plus" data-target="eigenschaft2"
                                         aria-label="Wert erhöhen">
                                         <i class="fas fa-plus"></i>
@@ -113,12 +112,12 @@
                             </div>
                             <!-- TaW -->
                             <div class="input-group">
-                                <label for="taw">TaW (Talentswert)</label>
+                                <label for="taw">TaW (Talentwert)</label>
                                 <div class="number-input">
                                     <button class="number-btn minus" data-target="taw" aria-label="Wert verringern">
                                         <i class="fas fa-minus"></i>
                                     </button>
-                                    <input type="number" id="taw" class="number-field" value="0" min="-20" max="20"
+                                    <input type="number" id="taw" class="number-field" value="0" min="0" max="31"
                                         aria-label="Talentswert">
                                     <button class="number-btn plus" data-target="taw" aria-label="Wert erhöhen">
                                         <i class="fas fa-plus"></i>
@@ -134,7 +133,7 @@
                                         <i class="fas fa-minus"></i>
                                     </button>
                                     <input type="number" id="eigenschaft3" class="number-field" value="10" min="0"
-                                        max="20" aria-label="Eigenschaft 3 Wert">
+                                        max="31" aria-label="Eigenschaft 3 Wert">
                                     <button class="number-btn plus" data-target="eigenschaft3"
                                         aria-label="Wert erhöhen">
                                         <i class="fas fa-plus"></i>

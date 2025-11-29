@@ -44,22 +44,25 @@ function calculateTapProbabilities(e1, e2, e3, tawBase, mod = 0) {
     const counts = new Array(tawBase + 1).fill(0);
     let successTotal = 0;
 
-    // Differenz für Erschwernis > TaW
+    // Effektiver TaW inkl. Mod
+    const effectiveTaW = tawBase + mod;
+
+    // Differenz, falls Erschwernis > TaW
     const diff = mod < 0 ? Math.max(0, -mod - tawBase) : 0;
-    const effectiveTaW = tawBase + mod; // für erleichterte Proben, darf nicht > TawBase verwendet werden
 
     for (let w1 = 1; w1 <= 20; w1++) {
         for (let w2 = 1; w2 <= 20; w2++) {
             for (let w3 = 1; w3 <= 20; w3++) {
                 let tap = null;
 
-                // Kritische Erfolge
+                // Kritische Erfolge → volle TaP*
                 if ((w1 === 1 && w2 === 1) || (w2 === 1 && w3 === 1) || (w1 === 1 && w3 === 1)) {
-                    tap = tawBase; // volle TaP* bei Doppel-1
+                    // Wenn effektiver TaW negativ → TaP*0, aber Erfolg zählt
+                    tap = effectiveTaW > 0 ? tawBase : 0;
                 }
-                // Kritische Fehlschläge
+                // Kritische Fehlschläge → Probe gescheitert
                 else if ((w1 === 20 && w2 === 20) || (w2 === 20 && w3 === 20) || (w1 === 20 && w3 === 20)) {
-                    continue; // Probe gescheitert
+                    continue;
                 }
                 else {
                     // Effektive Eigenschaften nach Erschwernis
@@ -67,21 +70,18 @@ function calculateTapProbabilities(e1, e2, e3, tawBase, mod = 0) {
                     let e2Eff = Math.max(0, e2 - diff);
                     let e3Eff = Math.max(0, e3 - diff);
 
-                    // Differenzen pro Wurf
                     const over1 = Math.max(0, w1 - e1Eff);
                     const over2 = Math.max(0, w2 - e2Eff);
                     const over3 = Math.max(0, w3 - e3Eff);
 
                     const totalOver = over1 + over2 + over3;
 
-                    // Überprüfen, ob TaW ausreicht
-                    if (totalOver > effectiveTaW) continue; // Probe gescheitert
-
-                    // TaP* = verbleibende Punkte
-                    if (diff > 0 && w1 <= e1Eff && w2 <= e2Eff && w3 <= e3Eff) {
-                        // Sonderregel: erschwerte Probe, volle TaW verbraucht → TaP* = 0
-                        tap = 0;
+                    if (effectiveTaW <= 0) {
+                        // Effektiver TaW negativ → keine normalen Erfolge möglich
+                        if (totalOver === 0) tap = 0; // nur wenn alles ≤ EffEigenschaft
+                        else continue; // sonst gescheitert
                     } else {
+                        if (totalOver > effectiveTaW) continue; // Probe gescheitert
                         tap = Math.min(effectiveTaW - totalOver, tawBase);
                     }
                 }
@@ -97,6 +97,7 @@ function calculateTapProbabilities(e1, e2, e3, tawBase, mod = 0) {
         taps: counts.map(c => (c / 8000) * 100)
     };
 }
+
 
 
 // ----------------------------------------
