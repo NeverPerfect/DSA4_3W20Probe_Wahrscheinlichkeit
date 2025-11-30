@@ -98,8 +98,6 @@ function calculateTapProbabilities(e1, e2, e3, tawBase, mod = 0) {
     };
 }
 
-
-
 // ----------------------------------------
 // Ergebnisse anzeigen
 // ----------------------------------------
